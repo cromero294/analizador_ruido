@@ -2,15 +2,15 @@
 import numpy as np
 import re
 import sys
-from sklearn import *
-from sklearn.model_selection import *
-from sklearn.tree import *
+from random import *
 
 class Datos(object):
 
   TiposDeAtributos=('Continuo','Nominal')
 
   def __init__(self, nombreFichero):
+
+    self.datos_clases_cambiadas = []
 
     self.tipoAtributos = []
     self.nominalAtributos = []
@@ -70,6 +70,7 @@ class Datos(object):
 
     fl.close()
 
+  '''
   def transformDataset(self):
     encAtributos = preprocessing.OneHotEncoder(categorical_features=self.nominalAtributos[:-1],sparse=False)
     X = encAtributos.fit_transform(self.datos[:,:-1])
@@ -88,11 +89,28 @@ class Datos(object):
     new_dataset = np.column_stack((X_test, Y_test, result, new_class))
 
     return new_dataset
+  '''
 
-  def changeClass(self, perc=0.5):
+  def cambiarClase(self, perc=0.5):
     numDatos = self.getNumDatos()
-    porcentaje = int(numDatos * self.porcentajeTrain)
-    print numDatos
+    porcentaje = int(numDatos * perc)
+    clases = self.datos[:,-1]
+
+    arrayAleatorio = range(0, numDatos)
+
+    shuffle(arrayAleatorio)
+
+    for num in arrayAleatorio[:porcentaje]:
+        self.datos[num,-1] = 1 - self.datos[num,-1]
+
+    #[self.datos[num,-1] <- 1 - self.datos[num,-1] for num in arrayAleatorio[:porcentaje]]
+    clase_bien_mal_clasificado = [(1.0 if self.datos[i,-1] == clases[i] else 0.0) for i in range(0,numDatos)]
+
+    self.datos_clases_cambiadas = np.column_stack((self.datos, np.array(clase_bien_mal_clasificado)))
+    #self.datos_clases_cambiadas = np.hstack((self.datos,clase_bien_mal_clasificado))
+
+  def getDatosCambiados(self):
+    return self.datos_clases_cambiadas
 
   def getTipoAtributos(self):
     return self.tipoAtributos
