@@ -2,6 +2,9 @@
 import numpy as np
 import re
 import sys
+from sklearn import *
+from sklearn.model_selection import *
+from sklearn.tree import *
 
 class Datos(object):
 
@@ -67,6 +70,30 @@ class Datos(object):
 
     fl.close()
 
+  def transformDataset(self):
+    encAtributos = preprocessing.OneHotEncoder(categorical_features=self.nominalAtributos[:-1],sparse=False)
+    X = encAtributos.fit_transform(self.datos[:,:-1])
+    Y = self.datos[:,-1]
+
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=0.9, random_state=None, shuffle = True)
+
+    classifier = DecisionTreeClassifier(random_state = 0)
+
+    classifier.fit(X_train, Y_train)
+
+    result = classifier.predict(X_test)
+
+    new_class = [(1.0 if value == Y_test[i] else 0.0) for i,value in enumerate(result)]
+
+    new_dataset = np.column_stack((X_test, Y_test, result, new_class))
+
+    return new_dataset
+
+  def changeClass(self, perc=0.5):
+    numDatos = self.getNumDatos()
+    porcentaje = int(numDatos * self.porcentajeTrain)
+    print numDatos
+
   def getTipoAtributos(self):
     return self.tipoAtributos
 
@@ -81,7 +108,7 @@ class Datos(object):
 
   def getDatos(self):
     return self.datos
-    
+
   def getNumDatos(self):
     return self.nDatos
 
