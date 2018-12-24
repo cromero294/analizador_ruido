@@ -10,11 +10,10 @@ import EstrategiaParticionado
 import numpy as np
 
 try:
-	dataset=Datos('Datasets/wdbc.data')
+    dataset=Datos('Datasets/wdbc.data')
 
-	transformed_dataset=dataset.transformDataset()
-	transformed_dataset.changeClass(0.5)
+    dataset.cambiarClase()
 
-	print transformed_dataset
+    print dataset.getDatosCambiados()
 except ValueError as e:
     print e
