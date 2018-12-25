@@ -70,6 +70,49 @@ class Datos(object):
 
     fl.close()
 
+################################################################################
+#                                                                              #
+#                              entrenamiento                                   #
+#                                                                              #
+################################################################################
+
+def entrenamiento(self, clasificador, flag_datos, nepocas=100):
+    '''
+    En la funcion entrenamiento se realiza el entrenamiento del clasificador
+    solicitado (de forma general para cualquier clasificador, en principio)
+    con el numero de epocas especificado (default: 100) y tambien si se va a
+    realizar con el metodo cambiarClase_ceros, unos o en general.
+
+    @param clasificador: es el clasificador que vamos a entrenar. P.ej: tree.DecisionTreeClassifier()
+    @param flag_datos: recibe un entero. Si es 1 o 0 utiliza funciones especificas sino, cambiarClase()
+    @param nepocas: numero de veces que se va a realizar el proceso de entrenamiento
+
+    @return clf: el clasificador ya entrenado con el conjunto especificado
+    '''
+
+    clf = clasificador()
+
+    if flag_datos == 0:
+        for epoca in range(nepocas):
+            self.cambiarClase_ceros()
+            clf = clf.fit(self.datos_clases_cambiadas_ceros[:,:-1], self.datos_clases_cambiadas_ceros[:,-1])
+    elif flag_datos == 1:
+        for epoca in range(nepocas):
+            self.cambiarClase_unos()
+            clf = clf.fit(self.datos_clases_cambiadas_unos[:,:-1], self.datos_clases_cambiadas_unos[:,-1])
+    else:
+        for epoca in range(nepocas):
+            self.cambiarClase()
+            clf = clf.fit(self.datos_clases_cambiadas[:,:-1], self.datos_clases_cambiadas[:,-1])
+
+    return clf
+
+################################################################################
+#                                                                              #
+#                              cambiar clases                                  #
+#                                                                              #
+################################################################################
+
   def cambiarClase(self, perc=0.5):
     '''
     Funcion que hace un swap de la clase al porcentaje indicado del total de
@@ -159,6 +202,12 @@ class Datos(object):
 
   def getDatosCambiados(self):
     return self.datos_clases_cambiadas
+
+  def getDatosCambiados_unos(self):
+    return self.datos_clases_cambiadas_unos
+
+  def getDatosCambiados_ceros(self):
+    return self.datos_clases_cambiadas_ceros
 
   def getTipoAtributos(self):
     return self.tipoAtributos
