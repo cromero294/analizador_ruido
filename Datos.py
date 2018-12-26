@@ -76,7 +76,7 @@ class Datos(object):
 #                                                                              #
 ################################################################################
 
-def entrenamiento(self, clasificador, flag_datos, nepocas=100):
+  def entrenamiento(self, clasificador, flag_datos, nepocas=100):
     '''
     En la funcion entrenamiento se realiza el entrenamiento del clasificador
     solicitado (de forma general para cualquier clasificador, en principio)
