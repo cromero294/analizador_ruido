@@ -76,7 +76,7 @@ class Datos(object):
 #                                                                              #
 ################################################################################
 
-  def entrenamiento(self, clasificador, flag_datos, nepocas=100):
+  def entrenamiento(self, clasificador, flag_datos=True, nepocas=100):
     '''
     En la funcion entrenamiento se realiza el entrenamiento del clasificador
     solicitado (de forma general para cualquier clasificador, en principio)
@@ -92,12 +92,10 @@ class Datos(object):
 
     clf = clasificador()
 
-    if flag_datos == 0:
+    if flag_datos == False:
         for epoca in range(nepocas):
             self.cambiarClase_ceros()
             clf = clf.fit(self.datos_clases_cambiadas_ceros[:,:-1], self.datos_clases_cambiadas_ceros[:,-1])
-    elif flag_datos == 1:
-        for epoca in range(nepocas):
             self.cambiarClase_unos()
             clf = clf.fit(self.datos_clases_cambiadas_unos[:,:-1], self.datos_clases_cambiadas_unos[:,-1])
     else:
