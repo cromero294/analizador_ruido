@@ -8,6 +8,41 @@ class Clasificador:
 
 ################################################################################
 #                                                                              #
+#                              entrenamiento                                   #
+#                                                                              #
+################################################################################
+
+  def entrenamiento(self, datos, clasificador, flag_datos=True, nepocas=100):
+    '''
+    En la funcion entrenamiento se realiza el entrenamiento del clasificador
+    solicitado (de forma general para cualquier clasificador, en principio)
+    con el numero de epocas especificado (default: 100) y tambien si se va a
+    realizar con el metodo cambiarClase_ceros, unos o en general.
+
+    @param clasificador: es el clasificador que vamos a entrenar. P.ej: tree.DecisionTreeClassifier()
+    @param flag_datos: recibe un entero. Si es 1 o 0 utiliza funciones especificas sino, cambiarClase()
+    @param nepocas: numero de veces que se va a realizar el proceso de entrenamiento
+
+    @return clf: el clasificador ya entrenado con el conjunto especificado
+    '''
+
+    clf = clasificador()
+
+    if flag_datos == False:
+        for epoca in range(nepocas):
+            self.cambiarClase_ceros(datos)
+            clf = clf.fit(datos.getDatosCambiados_ceros()[:,:-1], datos.getDatosCambiados_ceros()[:,-1])
+            self.cambiarClase_unos(datos)
+            clf = clf.fit(datos.getDatosCambiados_unos()[:,:-1], datos.getDatosCambiados_ceros()[:,-1])
+    else:
+        for epoca in range(nepocas):
+            self.cambiarClase(datos)
+            clf = clf.fit(datos.getDatosCambiados()[:,:-1], datos.getDatosCambiados()[:,-1])
+
+    return clf
+
+################################################################################
+#                                                                              #
 #                              cambiar clases                                  #
 #                                                                              #
 ################################################################################
@@ -76,7 +111,7 @@ class Clasificador:
 
     @param perc: indica el porcentaje de datos que se van a modificar.
     '''
-    numDatos = self.getNumDatos()
+    numDatos = datos.getNumDatos()
     porcentaje = int(numDatos * perc)
     datos_nuevos = datos.getDatos().copy()
 
