@@ -10,8 +10,6 @@ class Datos(object):
 
   def __init__(self, nombreFichero):
 
-    self.datos_clases_cambiadas = []
-
     self.tipoAtributos = []
     self.nominalAtributos = []
     self.diccionarios = []
@@ -75,15 +73,6 @@ class Datos(object):
 #                            getters y setters                                 #
 #                                                                              #
 ################################################################################
-
-  def getDatosCambiados(self):
-    return self.datos_clases_cambiadas
-
-  def getDatosCambiados_unos(self):
-    return self.datos_clases_cambiadas_unos
-
-  def getDatosCambiados_ceros(self):
-    return self.datos_clases_cambiadas_ceros
 
   def getTipoAtributos(self):
     return self.tipoAtributos

@@ -28,8 +28,8 @@ class Clasificador:
     clf = clasificador()
 
     for epoca in range(nepocas):
-        self.cambiarClase(datos)
-        clf = clf.fit(datos.getDatosCambiados()[:,:-1], datos.getDatosCambiados()[:,-1])
+        datos_cambiados = self.cambiarClase(datos)
+        clf = clf.fit(datos_cambiados[:,:-1], datos_cambiados[:,-1])
 
     return clf
 
@@ -50,11 +50,11 @@ class Clasificador:
     clf_1 = clasificador()
 
     for epoca in range(nepocas):
-        self.cambiarClase_ceros(datos)
-        clf_0 = clf_0.fit(datos.getDatosCambiados_ceros()[:,:-1], datos.getDatosCambiados_ceros()[:,-1])
+        datos_ceros = self.cambiarClase_ceros(datos)
+        clf_0 = clf_0.fit(datos_ceros[:,:-1], datos_ceros[:,-1])
 
-        self.cambiarClase_unos(datos)
-        clf_1 = clf_1.fit(datos.getDatosCambiados_unos()[:,:-1], datos.getDatosCambiados_unos()[:,-1])
+        datos_unos = self.cambiarClase_unos(datos)
+        clf_1 = clf_1.fit(datos_unos[:,:-1], datos_unos[:,-1])
 
     return clf_0, clf_1
 
@@ -75,10 +75,10 @@ class Clasificador:
 
     @param perc: indica el porcentaje de datos que se van a modificar.
     '''
-    numDatos = datos.getNumDatos()
+    numDatos = datos.shape[0]
     porcentaje = int(numDatos * perc)
-    clases = datos.getDatos()[:,-1].copy()
-    datos_nuevos = datos.getDatos().copy()
+    clases = datos[:,-1].copy() # TODO: Puede que se pueda quitar el copy
+    datos_nuevos = datos.copy() # TODO: Puede que se pueda quitar el copy
 
     arrayAleatorio = range(0, numDatos)
 
@@ -89,7 +89,7 @@ class Clasificador:
 
     clase_bien_mal_clasificado = [(1.0 if datos_nuevos[i,-1] == clases[i] else 0.0) for i in range(0,numDatos)]
 
-    datos.datos_clases_cambiadas = np.column_stack((datos_nuevos, np.array(clase_bien_mal_clasificado)))
+    return np.column_stack((datos_nuevos, np.array(clase_bien_mal_clasificado)))
 
   def cambiarClase_unos(self, datos, perc=0.5):
     '''
@@ -102,9 +102,9 @@ class Clasificador:
 
     @param perc: indica el porcentaje de datos que se van a modificar.
     '''
-    numDatos = datos.getNumDatos()
+    numDatos = datos.shape[0]
     porcentaje = int(numDatos * perc)
-    datos_nuevos = datos.getDatos().copy()
+    datos_nuevos = datos.copy()
 
     arrayAleatorio = range(0, numDatos)
 
@@ -115,7 +115,7 @@ class Clasificador:
 
     clase_bien_mal_clasificado = [(1.0 if datos_nuevos[i,-1] == 1.0 else 0.0) for i in range(0,numDatos)]
 
-    datos.datos_clases_cambiadas_unos = np.column_stack((datos_nuevos[:,:-1], np.array(clase_bien_mal_clasificado)))
+    return np.column_stack((datos_nuevos[:,:-1], np.array(clase_bien_mal_clasificado)))
 
   def cambiarClase_ceros(self, datos, perc=0.5):
     '''
@@ -128,9 +128,9 @@ class Clasificador:
 
     @param perc: indica el porcentaje de datos que se van a modificar.
     '''
-    numDatos = datos.getNumDatos()
+    numDatos = datos.shape[0]
     porcentaje = int(numDatos * perc)
-    datos_nuevos = datos.getDatos().copy()
+    datos_nuevos = datos.copy()
 
     arrayAleatorio = range(0, numDatos)
 
@@ -141,4 +141,4 @@ class Clasificador:
 
     clase_bien_mal_clasificado = [(1.0 if datos_nuevos[i,-1] == 0.0 else 0.0) for i in range(0,numDatos)]
 
-    datos.datos_clases_cambiadas_ceros = np.column_stack((datos_nuevos[:,:-1], np.array(clase_bien_mal_clasificado)))
+    return np.column_stack((datos_nuevos[:,:-1], np.array(clase_bien_mal_clasificado)))
