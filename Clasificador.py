@@ -12,34 +12,51 @@ class Clasificador:
 #                                                                              #
 ################################################################################
 
-  def entrenamiento(self, datos, clasificador, flag_datos=True, nepocas=100):
+  def entrenamiento(self, datos, clasificador, nepocas=100):
     '''
     En la funcion entrenamiento se realiza el entrenamiento del clasificador
-    solicitado (de forma general para cualquier clasificador, en principio)
-    con el numero de epocas especificado (default: 100) y tambien si se va a
-    realizar con el metodo cambiarClase_ceros, unos o en general.
+    solicitado (de forma general para cualquier clasificador)
+    con el numero de epocas especificado (default: 100).
 
+    @param datos: datos originales que vamos a modificar.
     @param clasificador: es el clasificador que vamos a entrenar. P.ej: tree.DecisionTreeClassifier()
-    @param flag_datos: recibe un entero. Si es 1 o 0 utiliza funciones especificas sino, cambiarClase()
-    @param nepocas: numero de veces que se va a realizar el proceso de entrenamiento
+    @param nepocas: numero de veces que se va a realizar el proceso de entrenamiento.
 
-    @return clf: el clasificador ya entrenado con el conjunto especificado
+    @return clf: el clasificador ya entrenado con el conjunto especificado.
     '''
 
     clf = clasificador()
 
-    if flag_datos == False:
-        for epoca in range(nepocas):
-            self.cambiarClase_ceros(datos)
-            clf = clf.fit(datos.getDatosCambiados_ceros()[:,:-1], datos.getDatosCambiados_ceros()[:,-1])
-            self.cambiarClase_unos(datos)
-            clf = clf.fit(datos.getDatosCambiados_unos()[:,:-1], datos.getDatosCambiados_ceros()[:,-1])
-    else:
-        for epoca in range(nepocas):
-            self.cambiarClase(datos)
-            clf = clf.fit(datos.getDatosCambiados()[:,:-1], datos.getDatosCambiados()[:,-1])
+    for epoca in range(nepocas):
+        self.cambiarClase(datos)
+        clf = clf.fit(datos.getDatosCambiados()[:,:-1], datos.getDatosCambiados()[:,-1])
 
     return clf
+
+  def entrenamiento_unos_ceros(self, datos, clasificador, nepocas=100):
+    '''
+    Funcion basada en el entrenamiento general pero para los conjuntos de datos
+    comparados con unos y ceros en vez de con la clase original de los datos.
+
+    @param datos: datos que utilizamos para modificar y entrenar el clasificador.
+    @param clasificador: es el clasificador que vamos a entrenar. P.ej: tree.DecisionTreeClassifier()
+    @param nepocas: numero de veces que se va a realizar el proceso de entrenamiento.
+
+    @return clf_0: el clasificador ya entrenado con el conjunto de datos y comparado con ceros.
+    @return clf_1: el clasificador ya entrenado con el conjunto de datos y comparado con unos.
+    '''
+
+    clf_0 = clasificador()
+    clf_1 = clasificador()
+
+    for epoca in range(nepocas):
+        self.cambiarClase_ceros(datos)
+        clf_0 = clf_0.fit(datos.getDatosCambiados_ceros()[:,:-1], datos.getDatosCambiados_ceros()[:,-1])
+
+        self.cambiarClase_unos(datos)
+        clf_1 = clf_1.fit(datos.getDatosCambiados_unos()[:,:-1], datos.getDatosCambiados_unos()[:,-1])
+
+    return clf_0, clf_1
 
 ################################################################################
 #                                                                              #
