@@ -34,7 +34,7 @@ try:
         datostrain = dataset.extraeDatos(particion.getTrain())
         datostest = dataset.extraeDatos(particion.getTest())
 
-        clf = cambiaClase.entrenamiento(datostrain, tree.DecisionTreeClassifier, 100)
+        clf = cambiaClase.entrenamiento(datostrain, tree.DecisionTreeClassifier, 100, 0.5)
         score_final += clf.score(datostest, np.ones(datostest.shape[0]))
 
     print score_final/num_particiones

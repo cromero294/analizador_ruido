@@ -12,7 +12,7 @@ class Clasificador:
 #                                                                              #
 ################################################################################
 
-  def entrenamiento(self, datos, clasificador, nepocas=100):
+  def entrenamiento(self, datos, clasificador, nepocas=100, perc=0.5):
     '''
     En la funcion entrenamiento se realiza el entrenamiento del clasificador
     solicitado (de forma general para cualquier clasificador)
@@ -28,12 +28,12 @@ class Clasificador:
     clf = clasificador()
 
     for epoca in range(nepocas):
-        datos_cambiados = self.cambiarClase(datos)
+        datos_cambiados = self.cambiarClase(datos, perc)
         clf = clf.fit(datos_cambiados[:,:-1], datos_cambiados[:,-1])
 
     return clf
 
-  def entrenamiento_unos_ceros(self, datos, clasificador, nepocas=100):
+  def entrenamiento_unos_ceros(self, datos, clasificador, nepocas=100, perc=0.5):
     '''
     Funcion basada en el entrenamiento general pero para los conjuntos de datos
     comparados con unos y ceros en vez de con la clase original de los datos.
@@ -50,10 +50,10 @@ class Clasificador:
     clf_1 = clasificador()
 
     for epoca in range(nepocas):
-        datos_ceros = self.cambiarClase_ceros(datos)
+        datos_ceros = self.cambiarClase_ceros(datos, perc)
         clf_0 = clf_0.fit(datos_ceros[:,:-1], datos_ceros[:,-1])
 
-        datos_unos = self.cambiarClase_unos(datos)
+        datos_unos = self.cambiarClase_unos(datos, perc)
         clf_1 = clf_1.fit(datos_unos[:,:-1], datos_unos[:,-1])
 
     return clf_0, clf_1
