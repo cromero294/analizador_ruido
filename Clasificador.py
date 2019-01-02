@@ -25,13 +25,11 @@ class Clasificador:
     @return clf: el clasificador ya entrenado con el conjunto especificado.
     '''
 
-    clf = clasificador()
-
     for epoca in range(nepocas):
         datos_cambiados = self.cambiarClase(datos, perc)
-        clf = clf.fit(datos_cambiados[:,:-1], datos_cambiados[:,-1])
+        clasificador = clasificador.fit(datos_cambiados[:,:-1], datos_cambiados[:,-1])
 
-    return clf
+    return clasificador
 
   def entrenamiento_unos_ceros(self, datos, clasificador, nepocas=100, perc=0.5):
     '''
