@@ -31,7 +31,7 @@ class Clasificador:
 
     return clasificador
 
-  def entrenamiento_unos_ceros(self, datos, clasificador, nepocas=100, perc=0.5):
+  def entrenamiento_unos_ceros(self, datos, clf_0, clf_1, nepocas=100, perc=0.5):
     '''
     Funcion basada en el entrenamiento general pero para los conjuntos de datos
     comparados con unos y ceros en vez de con la clase original de los datos.
@@ -43,9 +43,6 @@ class Clasificador:
     @return clf_0: el clasificador ya entrenado con el conjunto de datos y comparado con ceros.
     @return clf_1: el clasificador ya entrenado con el conjunto de datos y comparado con unos.
     '''
-
-    clf_0 = clasificador()
-    clf_1 = clasificador()
 
     for epoca in range(nepocas):
         datos_ceros = self.cambiarClase_ceros(datos, perc)

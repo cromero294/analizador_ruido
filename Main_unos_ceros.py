@@ -28,6 +28,9 @@ try:
 
     particiones = estrategia.creaParticiones(dataset)
 
+    clf0 = tree.DecisionTreeClassifier()
+    clf1 = tree.DecisionTreeClassifier()
+
     score_final_ceros = 0
     score_final_unos = 0
 
@@ -35,7 +38,7 @@ try:
         datostrain = dataset.extraeDatos(particion.getTrain())
         #datostest = dataset.extraeDatos(particion.getTest())
 
-        clf0, clf1 = cambiaClase.entrenamiento_unos_ceros(datostrain, tree.DecisionTreeClassifier, 100, 0.5)
+        clf0, clf1 = cambiaClase.entrenamiento_unos_ceros(datostrain, clf0, clf1, 100, 0.5)
 
     # el primero es clase 1.0 y el segundo 0.0
     #resultado esperado:
