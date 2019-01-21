@@ -53,6 +53,17 @@ class Clasificador:
 
     return clf_0, clf_1
 
+  def entrenamiento_variasClases(self, datos, clasificador, diccionario, nepocas=100, perc=0.5):
+    '''
+
+    '''
+
+    for epoca in range(nepocas):
+        datos_cambiados = self.cambiarClase_variasClases(datos, diccionario, perc)
+        clasificador = clasificador.fit(datos_cambiados[:,:-1], datos_cambiados[:,-1])
+
+    return clasificador
+
 ################################################################################
 #                                                                              #
 #                              cambiar clases                                  #
@@ -72,9 +83,9 @@ class Clasificador:
     shuffle(arrayAleatorio)
 
     for num in arrayAleatorio[:porcentaje]:
-        random_key = random.choice(list(diccionario))
+        random_key = choice(list(diccionario))
         while random_key == datos_nuevos[num,-1]:
-            random_key = random.choice(list(diccionario))
+            random_key = choice(list(diccionario))
 
         datos_nuevos[num,-1] = diccionario[random_key]
 
