@@ -12,7 +12,7 @@ class Clasificador:
 #                                                                              #
 ################################################################################
 
-  def entrenamiento(self, datos, clasificador, nepocas=100, perc=0.5):
+  def entrenamiento(self, datos, nepocas=100, perc=0.5):
     '''
     En la funcion entrenamiento se realiza el entrenamiento del clasificador
     solicitado (de forma general para cualquier clasificador)
@@ -25,11 +25,15 @@ class Clasificador:
     @return clf: el clasificador ya entrenado con el conjunto especificado.
     '''
 
-    for epoca in range(nepocas):
-        datos_cambiados = self.cambiarClase(datos, perc)
-        clasificador = clasificador.fit(datos_cambiados[:,:-1], datos_cambiados[:,-1])
+    conjuntoClasificadores = Conjunto()
 
-    return clasificador
+    for epoca in range(nepocas):
+        clfTree = tree.DecisionTreeClassifier()
+        datos_cambiados = self.cambiarClase(datos, perc)
+        clfTree.fit(datos_cambiados[:,:-1], datos_cambiados[:,-1])
+        conjuntoClasificadores.add(clfTree)
+
+    return conjuntoClasificadores
 
   def entrenamiento_unos_ceros(self, datos, clf_0, clf_1, nepocas=100, perc=0.5):
     '''
