@@ -37,7 +37,6 @@ class EstrategiaParticionado:
   def creaParticiones(self,datos,seed=None):
     pass
 
-
 #####################################################################################################
 
 class ValidacionSimple(EstrategiaParticionado):
