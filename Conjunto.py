@@ -1,3 +1,5 @@
+from scipy import stats
+
 class Conjunto:
 
     def __init__(self,numAtb):
@@ -7,8 +9,19 @@ class Conjunto:
     def setClasificadores(self, clasificadores):
         self.clasificadores = clasificadores
 
-    def score(self, datos, clases):
+    def score(self, datos):
         if datos.shape[1] != self.numAtb:
             sys.log("Numero de atributos incorrecto")
-        if len(clases) != datos.shape[0]:
-            sys.log("Numero de clases no coincide con numero de ejemplos")
+
+        aciertos = 0
+
+        for dato in datos:
+            predicciones = []
+
+            for clasificador in self.clasificadores:
+                predicciones.append(clasificador.predict([dato]))
+
+            if stats.mode(predicciones)[0][0][0] == 1.0:
+                aciertos+=1.0
+
+        return aciertos/datos.shape[0] # devuelve el porcentaje de aciertos
