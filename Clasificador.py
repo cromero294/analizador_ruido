@@ -2,7 +2,9 @@
 import numpy as np
 import re
 import sys
+from Conjunto import *
 from random import *
+from sklearn import tree
 
 class Clasificador:
 
@@ -14,24 +16,19 @@ class Clasificador:
 
   def entrenamiento(self, datos, nepocas=100, perc=0.5):
     '''
-    En la funcion entrenamiento se realiza el entrenamiento del clasificador
-    solicitado (de forma general para cualquier clasificador)
-    con el numero de epocas especificado (default: 100).
 
-    @param datos: datos originales que vamos a modificar.
-    @param clasificador: es el clasificador que vamos a entrenar. P.ej: tree.DecisionTreeClassifier()
-    @param nepocas: numero de veces que se va a realizar el proceso de entrenamiento.
-
-    @return clf: el clasificador ya entrenado con el conjunto especificado.
     '''
 
-    conjuntoClasificadores = Conjunto()
+    conjuntoClasificadores = Conjunto(datos.shape[1])
+    clasificadores = []
 
     for epoca in range(nepocas):
         clfTree = tree.DecisionTreeClassifier()
         datos_cambiados = self.cambiarClase(datos, perc)
         clfTree.fit(datos_cambiados[:,:-1], datos_cambiados[:,-1])
-        conjuntoClasificadores.add(clfTree)
+        clasificadores.append(clfTree)
+
+    conjuntoClasificadores.setClasificadores(clasificadores)
 
     return conjuntoClasificadores
 

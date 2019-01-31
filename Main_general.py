@@ -23,16 +23,12 @@ try:
 
     dataset=Datos('Datasets/wdbc.data')
 
-    num_particiones = 20
+    num_particiones = 10
 
     estrategia = EstrategiaParticionado.ValidacionCruzada(num_particiones)
     cambiaClase = Clasificador()
 
     particiones = estrategia.creaParticiones(dataset)
-
-    clfTree = tree.DecisionTreeClassifier()
-    clfRandom = RandomForestClassifier(n_estimators=1001, max_depth=2, random_state=0)
-    clfKNN = KNeighborsClassifier(n_neighbors=101, weights = 'uniform')
 
     score_final_tree = 0
     score_final_random = 0
@@ -42,13 +38,9 @@ try:
         datostrain = dataset.extraeDatos(particion.getTrain())
         datostest = dataset.extraeDatos(particion.getTest())
 
-        clfTree = cambiaClase.entrenamiento(datostrain, clfTree, 100, 0.5)
-        clfRandom = cambiaClase.entrenamiento(datostrain, clfRandom, 100, 0.5)
-        clfKNN = cambiaClase.entrenamiento(datostrain, clfKNN, 100, 0.5)
+        conjuntoTree = cambiaClase.entrenamiento(datostrain, clfTree, 100, 0.5)
 
         score_final_tree += clfTree.score(datostest, np.ones(datostest.shape[0]))
-        score_final_random += clfRandom.score(datostest, np.ones(datostest.shape[0]))
-        score_final_KNN += clfKNN.score(datostest, np.ones(datostest.shape[0]))
 
     print "Arbol de decision: " + str(score_final_tree/num_particiones)
     print "Random forest: " + str(score_final_random/num_particiones)
