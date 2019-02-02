@@ -30,7 +30,7 @@ class Clasificador:
 
     conjuntoClasificadores.setClasificadores(clasificadores)
 
-    return conjuntoClasificadores
+    return conjuntoClasificadores, datos_cambiados
 
   def entrenamiento_unos_ceros(self, datos, clf_0, clf_1, nepocas=100, perc=0.5):
     '''

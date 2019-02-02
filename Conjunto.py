@@ -1,4 +1,5 @@
 from scipy import stats
+import sys
 
 class Conjunto:
 
@@ -9,9 +10,41 @@ class Conjunto:
     def setClasificadores(self, clasificadores):
         self.clasificadores = clasificadores
 
+    def predict(self,datos):
+
+        clasificacion = []
+
+        for dato in datos:
+            predicciones = []
+
+            for clasificador in self.clasificadores:
+                predicciones.append(clasificador.predict([dato]))
+
+            clasificacion.append(stats.mode(predicciones)[0][0][0])
+
+        return clasificacion
+
+    def clasifica(self,datos,atributosDiscretos,diccionario):
+        if datos.shape[1] != self.numAtb:
+            print("Numero de atributos incorrecto")
+            sys.exit()
+
+        clasificacion = []
+
+        for dato in datos:
+            predicciones = []
+
+            for clasificador in self.clasificadores:
+                predicciones.append(clasificador.predict([dato]))
+
+            clasificacion.append(stats.mode(predicciones)[0][0][0])
+
+        return clasificacion
+
     def score(self, datos):
         if datos.shape[1] != self.numAtb:
-            sys.log("Numero de atributos incorrecto")
+            print("Numero de atributos incorrecto")
+            sys.exit()
 
         aciertos = 0
 
