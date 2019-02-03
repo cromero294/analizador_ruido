@@ -72,6 +72,27 @@ class ValidacionSimple(EstrategiaParticionado):
 
     return self.particiones
 
+  # Crea particiones segun el metodo tradicional de division de los datos segun el porcentaje deseado.
+  # Devuelve una lista de particiones (clase Particion)
+  def creaParticionesDatosNUMPY(self,datos,seed=None):
+    self.particiones=[]
+
+    numDatos = datos.shape[0]
+    porcentaje = int(numDatos * self.porcentajeTrain)
+
+    for i in range(self.numeroParticiones):
+      arrayAleatorio = range(0, numDatos)
+      shuffle(arrayAleatorio)
+
+      particion = Particion()
+
+      particion.indicesTrain = arrayAleatorio[0:porcentaje]
+      particion.indicesTest = arrayAleatorio[porcentaje:]
+
+      self.particiones.append(particion)
+
+    return self.particiones
+
 
 #####################################################################################################
 class ValidacionCruzada(EstrategiaParticionado):

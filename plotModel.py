@@ -43,19 +43,25 @@ def plotModel(x,y,clase,clf,title,diccionarios):
     plt.ylabel("Y")
     plt.title(title)
 
-def plotPuntos(datos):
+def plotClases(datos, titulo):
+    for dato in datos:
+        if dato[-2] == 1.0:
+            plt.plot(dato[0],dato[1],'ro')
+        else:
+            plt.plot(dato[0],dato[1],'bs')
+
+    plt.title(titulo)
+
+def plotPuntos(datos, titulo):
     for dato in datos:
         if dato[-1] == 1.0:
             plt.plot(dato[0],dato[1],'ro')
         else:
             plt.plot(dato[0],dato[1],'bs')
 
-    plt.xlabel('Atributo 1')
-    plt.ylabel('Atributo 2')
-    plt.title('Ruido artificial')
-    plt.show()
+    plt.title(titulo)
 
-def plotPuntosClasificados(datos,clasificador):
+def plotPuntosClasificados(datos,clasificador,titulo):
     predicciones = clasificador.predict(datos)
 
     for i,dato in enumerate(datos):
@@ -63,8 +69,5 @@ def plotPuntosClasificados(datos,clasificador):
             plt.plot(dato[0],dato[1],'ro')
         else:
             plt.plot(dato[0],dato[1],'bs')
-            
-    plt.xlabel('Atributo 1')
-    plt.ylabel('Atributo 2')
-    plt.title('Clasificacion de ruido')
-    plt.show()
+
+    plt.title(titulo)

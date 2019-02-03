@@ -27,6 +27,7 @@ class Clasificador:
         datos_cambiados = self.cambiarClase(datos, perc)
         clfTree.fit(datos_cambiados[:,:-1], datos_cambiados[:,-1])
         clasificadores.append(clfTree)
+        #print id(clfTree)
 
     conjuntoClasificadores.setClasificadores(clasificadores)
 
