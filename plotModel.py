@@ -61,13 +61,22 @@ def plotPuntos(datos, titulo):
 
     plt.title(titulo)
 
+def plotPuntosRuido(datos, titulo):
+    for dato in datos:
+        if dato[-1] == 1.0:
+            plt.plot(dato[0],dato[1],'g^')
+        else:
+            plt.plot(dato[0],dato[1],'ro')
+
+    plt.title(titulo)
+
 def plotPuntosClasificados(datos,clasificador,titulo):
     predicciones = clasificador.predict(datos)
 
     for i,dato in enumerate(datos):
         if predicciones[i] == 1.0:
-            plt.plot(dato[0],dato[1],'ro')
+            plt.plot(dato[0],dato[1],'g^')
         else:
-            plt.plot(dato[0],dato[1],'bs')
+            plt.plot(dato[0],dato[1],'ro')
 
     plt.title(titulo)

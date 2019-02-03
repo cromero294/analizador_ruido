@@ -74,15 +74,15 @@ try:
     plotClases(datos_cambiados, "Datos con ruido artificial")
 
     '''
-    Datos en rojo, dato no cambiado
-    Datos en azul, ruido artificial
+    Datos en verde, dato no cambiado
+    Datos en rojo, ruido artificial
     '''
     plt.subplot(2, 2, 3)
-    plotPuntos(datos_cambiados, "Bien/mal clasificado")
+    plotPuntosRuido(datos_cambiados, "Bien/mal clasificado")
 
     '''
-    Datos en rojo, bien clasificado
-    Datos en azul, ruido
+    Datos en verde, bien clasificado
+    Datos en rojo, ruido
     '''
     plt.subplot(2, 2, 4)
     plotPuntosClasificados(datostest,clfTree, "Clasificacion final")
