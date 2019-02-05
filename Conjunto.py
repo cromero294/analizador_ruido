@@ -12,7 +12,7 @@ class Conjunto:
 
     def predict(self,datos):
         if datos.shape[1] != self.numAtb:
-            print("Numero de atributos incorrecto")
+            print("Numero de atributos incorrecto. Numero de atributos: " + str(self.numAtb) + ". Numero utilizado: " + str(datos.shape[1]))
             sys.exit()
 
         clasificacion = []

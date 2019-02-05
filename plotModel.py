@@ -14,14 +14,16 @@ def plotModel(x,y,clase,clf,title,diccionarios):
 
     xx, yy = np.meshgrid(np.arange(x_min, x_max, hx), np.arange(y_min, y_max, hy))
 
-    if isinstance(clf, Conjunto.Conjunto):
-        print np.c_[xx.ravel(), yy.ravel()].shape
-        z = clf.predict(np.c_[xx.ravel(), yy.ravel()])
-    elif hasattr(clf, "decision_function"):
-        z = clf.decision_function(np.c_[xx.ravel(), yy.ravel()])
-    else:
-        z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel()])[:, 1]
+    print np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])]
 
+    if isinstance(clf, Conjunto.Conjunto):
+        z = clf.predict(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
+    elif hasattr(clf, "decision_function"):
+        z = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
+    else:
+        z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])[:, 1]
+
+    z = np.array(z)
 
     z = z.reshape(xx.shape)
     cm = plt.cm.RdBu
