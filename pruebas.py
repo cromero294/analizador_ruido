@@ -25,7 +25,7 @@ try:
     El score se mide suponiendo que el dataset no tiene nada de ruido.
     '''
 
-    dataset=Datos('Datasets/example3.data')
+    dataset=Datos('Datasets/wdbc.data')
 
     num_particiones = 10
 

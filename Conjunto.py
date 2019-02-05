@@ -11,20 +11,6 @@ class Conjunto:
         self.clasificadores = clasificadores
 
     def predict(self,datos):
-
-        clasificacion = []
-
-        for dato in datos:
-            predicciones = []
-
-            for clasificador in self.clasificadores:
-                predicciones.append(clasificador.predict([dato]))
-
-            clasificacion.append(stats.mode(predicciones)[0][0][0])
-
-        return clasificacion
-
-    def clasifica(self,datos,atributosDiscretos,diccionario):
         if datos.shape[1] != self.numAtb:
             print("Numero de atributos incorrecto")
             sys.exit()

@@ -24,17 +24,16 @@ try:
 
     El score se mide suponiendo que el dataset no tiene nada de ruido.
     '''
-    X,y=make_moons(n_samples=100, shuffle=True, noise=0.2, random_state=None)
 
-    datos = np.column_stack((X, y))
+    X,y=make_moons(n_samples=1000, shuffle=True, noise=0.5, random_state=None)
 
-    num_particiones = 10
+    datostrain = np.column_stack((X, y))
 
-    #estrategia = EstrategiaParticionado.ValidacionCruzada(num_particiones)
-    estrategia = EstrategiaParticionado.ValidacionSimple(1, 80)
+    Xt,yt=make_moons(n_samples=20000, shuffle=True, noise=0.5, random_state=None)
+
+    datostest = np.column_stack((Xt, yt))
+
     cambiaClase = Clasificador()
-
-    particiones = estrategia.creaParticionesDatosNUMPY(datos)
 
     score_final_tree = 0
 
@@ -42,10 +41,7 @@ try:
 
     print("Iteracion: " + str(iteracion))
 
-    datostrain = datos[particiones[0].getTrain(),:]
-    datostest = datos[particiones[0].getTest(),:]
-
-    clfTree,datos_cambiados = cambiaClase.entrenamiento(datostrain, 100, 0.2)
+    clfTree,datos_cambiados = cambiaClase.entrenamiento(datostrain, 100, 0.5)
 
     score_final_tree += clfTree.score(datostest)
     clasificaciones = clfTree.predict(datostest)
