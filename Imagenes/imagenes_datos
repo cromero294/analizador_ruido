@@ -1,0 +1,18 @@
+A_moons.eps
+
+  - Main origen:                pruebasMoons.py
+  - Datos entrenamiento:        X,y=make_moons(n_samples=10000, shuffle=True, noise=0.5, random_state=None)
+  - Datos test:                 Xt,yt=make_moons(n_samples=20000, shuffle=True, noise=0.5, random_state=None)
+  - Numero datos entrenamiento: 10000
+  - Numero datos test:          20000
+  - Funcion entrenamiento:      entrenamiento(datostrain, 100, 0.5)
+  - Conjunto clasificadores:    100, tree.DecisionTreeClassifier()
+  - Porcentaje acierto:         0,8001 ~ 80,01%
+  - Descripcion:                Imagen separada en cuatro recuadros. En el primer recuadro vemos el total de
+                                los datos originales separados en dos clases. En el segundo, podemos ver los
+                                datos modificados en la última iteración del entrenamiento, es decir, la
+                                modificación aleatoria del 50% de las clases. En la tercera, podemos ver en
+                                color verde los ejemplos que están bien clasificados y en rojo los que están
+                                modificados en la última iteración del entrenamiento. Finalmente, en la cuarta
+                                imagen, vemos la clasificación final de los elementos (bien clasificado en
+                                verde, mal clasificado en rojo).

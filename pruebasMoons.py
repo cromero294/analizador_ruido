@@ -25,11 +25,11 @@ try:
     El score se mide suponiendo que el dataset no tiene nada de ruido.
     '''
 
-    X,y=make_moons(n_samples=10000, shuffle=True, noise=0.5, random_state=None)
+    X,y=make_moons(n_samples=100, shuffle=True, noise=0.5, random_state=None)
 
     datostrain = np.column_stack((X, y))
 
-    Xt,yt=make_moons(n_samples=20000, shuffle=True, noise=0.5, random_state=None)
+    Xt,yt=make_moons(n_samples=200, shuffle=True, noise=0.5, random_state=None)
 
     datostest = np.column_stack((Xt, yt))
 
@@ -83,8 +83,8 @@ try:
     plt.subplot(2, 2, 4)
     plotPuntosClasificados(datostest,clfTree, "Clasificacion final")
 
-    #plt.show()
-    plt.savefig("Imagenes/A_moons.eps")
+    plt.show()
+    #plt.savefig(".eps")
 
 except ValueError as e:
     print(e)

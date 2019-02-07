@@ -16,7 +16,13 @@ class Clasificador:
 
   def entrenamiento(self, datos, nepocas=100, perc=0.5):
     '''
+    Entrena un conjunto (nepocas) de clasificadores
 
+    @param datos: datos de entrenamiento
+    @param nepocas: numero de clasificadores que vamos a entrenar
+    @param perc: porcentaje de ruido artificial que se incluye
+    @return datos_cambiados: ultimos datos modificados para mostrarlos
+    @return conjuntoClasificadores: el conjunto de clasificadores creado
     '''
 
     conjuntoClasificadores = Conjunto(datos.shape[1])
@@ -48,6 +54,7 @@ class Clasificador:
     Los nuevos datos se guardan en la variable datos_clases_cambiadas de la clase Datos.
 
     @param perc: indica el porcentaje de datos que se van a modificar.
+    @return conjunto de datos modificados
     '''
     numDatos = datos.shape[0]
     porcentaje = int(numDatos * perc)
