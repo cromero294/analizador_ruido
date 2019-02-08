@@ -16,3 +16,51 @@ A_moons.eps
                                 modificados en la última iteración del entrenamiento. Finalmente, en la cuarta
                                 imagen, vemos la clasificación final de los elementos (bien clasificado en
                                 verde, mal clasificado en rojo).
+
+B_error_moons.eps
+
+  - Main origen:                Main_error.py
+  - Datos entrenamiento:        X,y=make_moons(n_samples=500, shuffle=True, noise=0.5, random_state=None)
+  - Datos test:                 Xt,yt=make_moons(n_samples=20000, shuffle=True, noise=0.2, random_state=None)
+  - Numero datos entrenamiento: 500
+  - Numero datos test:          20000
+  - Funcion entrenamiento:      entrenamiento(datostrain, 101, 0.5)
+  - Conjunto clasificadores:    101, tree.DecisionTreeClassifier()
+  - Descripcion:                En la imagen podemos observar el comportamiento de la tasa de fallos del algoritmo
+                                al utilizar un entrenamiento de 101 árboles con 500 ejemplos y un conjunto de test
+                                de 20000 ejemplos. El programa va probando, con el mismo conjunto de árboles pero
+                                de uno en uno, con los datos de test y recoge su tasa de error frente al número de
+                                árboles utilizado. A pesar de realizar la clasificación 10 veces para regular la gráfica
+                                la función sale con sierra y creo que se puede deber al utilizar conjuntos pares de
+                                árboles.
+
+B_error_moons_impares.eps
+
+  - Main origen:                Main_error.py
+  - Datos entrenamiento:        X,y=make_moons(n_samples=500, shuffle=True, noise=0.5, random_state=None)
+  - Datos test:                 Xt,yt=make_moons(n_samples=20000, shuffle=True, noise=0.2, random_state=None)
+  - Numero datos entrenamiento: 500
+  - Numero datos test:          20000
+  - Funcion entrenamiento:      entrenamiento(datostrain, 101, 0.5)
+  - Conjunto clasificadores:    101, tree.DecisionTreeClassifier()
+  - Descripcion:                En la imagen podemos observar el comportamiento de la tasa de fallos del algoritmo
+                                al utilizar un entrenamiento de 101 árboles con 500 ejemplos y un conjunto de test
+                                de 20000 ejemplos. El programa va probando, con el mismo conjunto de árboles pero
+                                de uno en uno, con los datos de test y recoge su tasa de error frente al número de
+                                árboles utilizado. Se eliminan los conjuntos pares para que no exista opción de empate.
+
+B_error_moons_impares_menos_datos.eps
+
+  - Main origen:                Main_error.py
+  - Datos entrenamiento:        X,y=make_moons(n_samples=500, shuffle=True, noise=0.5, random_state=None)
+  - Datos test:                 Xt,yt=make_moons(n_samples=100, shuffle=True, noise=0.2, random_state=None)
+  - Numero datos entrenamiento: 500
+  - Numero datos test:          100
+  - Funcion entrenamiento:      entrenamiento(datostrain, 501, 0.5)
+  - Conjunto clasificadores:    501, tree.DecisionTreeClassifier()
+  - Descripcion:                En la imagen podemos observar el comportamiento de la tasa de fallos del algoritmo
+                                al utilizar un entrenamiento de 501 árboles con 500 ejemplos y un conjunto de test
+                                de 100 ejemplos. Se hace la media de 100 clasificaciones para que no dentee la gráfica.
+                                El programa va probando, con el mismo conjunto de árboles pero de uno en uno, con los
+                                datos de test y recoge su tasa de error frente al número de árboles utilizado. Se
+                                eliminan los conjuntos pares para que no exista opción de empate.
