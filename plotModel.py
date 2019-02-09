@@ -2,10 +2,11 @@ import Conjunto
 from matplotlib.colors import ListedColormap
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn import tree
 
 # Autor Luis Lago y Manuel Sanchez Montanes
 # Modificada por Gonzalo
-def plotModel(x,y,clase,clf,title,diccionarios):
+def plotModel(x,y,clase_orig,clase,clf,title,diccionarios):
     x_min, x_max = x.min() - .2, x.max() + .2
     y_min, y_max = y.min() - .2, y.max() + .2
 
@@ -14,14 +15,23 @@ def plotModel(x,y,clase,clf,title,diccionarios):
 
     xx, yy = np.meshgrid(np.arange(x_min, x_max, hx), np.arange(y_min, y_max, hy))
 
-    print np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])]
+    #############################################
+    ##########     CLASIFICACION     ############
+    #############################################
+
+    clasificador = tree.DecisionTreeClassifier()
+    clasificador.fit(np.c_[x,y], clase_orig)
+    clases = clasificador.predict(np.c_[xx.ravel(), yy.ravel()])
 
     if isinstance(clf, Conjunto.Conjunto):
-        z = clf.predict(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
+        z = clf.predict(np.c_[xx.ravel(), yy.ravel(), clases])
+        #z = clf.predict(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
     elif hasattr(clf, "decision_function"):
-        z = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
+        z = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), clases])
+        #z = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
     else:
-        z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])[:, 1]
+        z = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), clases])
+        #z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])[:, 1]
 
     z = np.array(z)
 
@@ -33,8 +43,8 @@ def plotModel(x,y,clase,clf,title,diccionarios):
     plt.contour(xx, yy, z, [0.5], linewidths=[2], colors=['k'])
 
     if clase is not None:
-        plt.scatter(x[clase==0], y[clase==0], c='#FF0000')
-        plt.scatter(x[clase==1], y[clase==1], c='#0000FF')
+        plt.scatter(x[clase==0.], y[clase==0.], c='#FF0000')
+        plt.scatter(x[clase==1.], y[clase==1.], c='#0000FF')
     else:
         plt.plot(x,y,'g', linewidth=3)
 

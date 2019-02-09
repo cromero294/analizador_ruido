@@ -64,3 +64,30 @@ B_error_moons_impares_menos_datos.eps
                                 El programa va probando, con el mismo conjunto de árboles pero de uno en uno, con los
                                 datos de test y recoge su tasa de error frente al número de árboles utilizado. Se
                                 eliminan los conjuntos pares para que no exista opción de empate.
+
+B_error_wdbc.eps
+
+  - Main origen:                Main_error.py
+  - Datos entrenamiento:        80%, wdbc.data
+  - Datos test:                 20%, wdbc.data
+  - Numero datos entrenamiento: 455
+  - Numero datos test:          114
+  - Funcion entrenamiento:      entrenamiento(datostrain, 100, 0.5)
+  - Conjunto clasificadores:    100, tree.DecisionTreeClassifier()
+  - Descripcion:                Se observa la tasa de fallo con respecto al número de clasificadores utilizado. Para
+                                regular la gráfica se realiza la media de 100 clasificaciones distintas de los datos.
+                                La gráfica sigue siendo demasiado irregular.
+
+B_error_wdbc_impares.eps
+
+  - Main origen:                Main_error.py
+  - Datos entrenamiento:        80%, wdbc.data
+  - Datos test:                 20%, wdbc.data
+  - Numero datos entrenamiento: 455
+  - Numero datos test:          114
+  - Funcion entrenamiento:      entrenamiento(datostrain, 101, 0.5)
+  - Conjunto clasificadores:    101, tree.DecisionTreeClassifier()
+  - Descripcion:                Se observa la tasa de fallo con respecto al número de clasificadores utilizado. Para
+                                regular la gráfica se realiza la media de 100 clasificaciones distintas de los datos.
+                                La gráfica sigue siendo demasiado irregular. Se utilizan numeros impares de
+                                clasificadores.

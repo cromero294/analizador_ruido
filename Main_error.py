@@ -26,36 +26,50 @@ try:
     '''
 
     ########### DATOS ###########
+    '''
     X,y=make_moons(n_samples=500, shuffle=True, noise=0.5, random_state=None)
     datostrain = np.column_stack((X, y))
 
     Xt,yt=make_moons(n_samples=100, shuffle=True, noise=0.2, random_state=None)
     datostest = np.column_stack((Xt, yt))
+    '''
+
+    dataset=Datos('Datasets/wdbc.data')
+
+    num_particiones = 1
+
+    #estrategia = EstrategiaParticionado.ValidacionCruzada(num_particiones)
+    estrategia = EstrategiaParticionado.ValidacionSimple(1, 80)
+    cambiaClase = Clasificador()
+
+    particiones = estrategia.creaParticiones(dataset)
+
+    datostrain = dataset.extraeDatos(particiones[0].getTrain())
+    datostest = dataset.extraeDatos(particiones[0].getTest())
 
     ########### CLASIFICADOR ###########
     cambiaClase = Clasificador()
-    num_clasificadores = 501
+    num_clasificadores = 100
 
     score_final_tree = []
 
     clfTree,_ = cambiaClase.entrenamiento(datostrain, num_clasificadores, 0.5)
 
     for i in range(1,num_clasificadores+1):
-        if i%2 != 0:
-            print "Iteracion " + str(i) +"/501"
-            scores = []
-            for x in range(100):
-                print "\tSubiteracion " + str(x+1) + "/100"
-                scores.append(1 - clfTree.score(datostest,i))
-            score_final_tree.append(np.array(scores).mean())
+        print "Iteracion " + str(i) +"/100"
+        scores = []
+        for x in range(100):
+            print "\tSubiteracion " + str(x+1) + "/100"
+            scores.append(1 - clfTree.score(datostest,i))
+        score_final_tree.append(np.array(scores).mean())
 
     print("Arbol de decision: " + str(score_final_tree))
 
     ########### GRAFICAS ###########
-    plt.plot(range(1,502,2),score_final_tree)
+    plt.plot(range(1,101),score_final_tree)
     #plt.show()
-    plt.title("Error - Clasificadores (Impares)")
-    plt.savefig("Imagenes/B_error_moons_impares_menos_datos.eps")
+    plt.title("Error - Clasificadores")
+    plt.savefig("Imagenes/B_error_wdbc.eps")
 
 except ValueError as e:
     print(e)
