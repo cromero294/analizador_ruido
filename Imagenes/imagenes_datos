@@ -91,3 +91,17 @@ B_error_wdbc_impares.eps
                                 regular la gráfica se realiza la media de 100 clasificaciones distintas de los datos.
                                 La gráfica sigue siendo demasiado irregular. Se utilizan numeros impares de
                                 clasificadores.
+
+C_example1_mesh.eps, C_example3_mesh.eps, C_example4_mesh.eps
+
+  - Main origen:                pruebas.py
+  - Datos entrenamiento:        80%, example1.data, example3.data, example4.data,
+  - Datos test:                 20%, example1.data, example3.data, example4.data,
+  - Numero datos entrenamiento: 320, 320, 80
+  - Numero datos test:          80, 80, 20
+  - Funcion entrenamiento:      entrenamiento(datostrain, 100, 0.5)
+  - Conjunto clasificadores:    100, tree.DecisionTreeClassifier()
+  - Descripcion:                Se observa la clasificación de los datos y la forma de clasificar del conjunto. Para
+                                realizar la imagen utilizamos los datos de test y la función plotModel, en la cual
+                                generamos un conjunto de datos con .ravel y lo clasificamos para obtener su supuesta
+                                clase real para, a continuación, generar el mesh del algoritmo de clasificación. 

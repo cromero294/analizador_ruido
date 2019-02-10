@@ -19,6 +19,9 @@ def plotModel(x,y,clase_orig,clase,clf,title,diccionarios):
     ##########     CLASIFICACION     ############
     #############################################
 
+    '''
+    Clasificacion del Ravel con el entrenamiento de los datos de test originales
+    '''
     clasificador = tree.DecisionTreeClassifier()
     clasificador.fit(np.c_[x,y], clase_orig)
     clases = clasificador.predict(np.c_[xx.ravel(), yy.ravel()])
