@@ -27,8 +27,8 @@ def plotModel(x,y,clase_orig,clase,clf,title,diccionarios):
     clases = clasificador.predict(np.c_[xx.ravel(), yy.ravel()])
 
     if isinstance(clf, Conjunto.Conjunto):
-        z = clf.predict(np.c_[xx.ravel(), yy.ravel(), clases])
-        #z = clf.predict(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
+        #z = clf.predict(np.c_[xx.ravel(), yy.ravel(), clases])
+        z = clf.predict(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
         #z = clf.predict(np.c_[xx.ravel(), yy.ravel(), np.zeros(np.c_[xx.ravel(), yy.ravel()].shape[0])])
     elif hasattr(clf, "decision_function"):
         z = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), clases])

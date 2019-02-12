@@ -5,10 +5,42 @@ class Conjunto:
 
     def __init__(self,numAtb):
         self.numAtb = numAtb # Numero de atributos que debe tener el conjunto de
-                             # datos a clasificar (1 atb mas que e original porque guarda la clase cambiada como atributo)
+                             # datos a clasificar (1 atb mas que el original porque
+                             # guarda la clase cambiada como atributo)
+        self.predicciones = []
 
     def setClasificadores(self, clasificadores):
         self.clasificadores = clasificadores
+
+    def predict_and_save(self,datos):
+        if datos.shape[1] != self.numAtb:
+            print("Numero de atributos incorrecto. Numero de atributos: " + str(self.numAtb) + ". Numero utilizado: " + str(datos.shape[1]))
+            sys.exit()
+
+        for clasificador in self.clasificadores:
+            predic = []
+
+            for dato in datos:
+                predic.append(clasificador.predict([dato])[0])
+
+            self.predicciones.append(predic)
+
+    def score_and_save(self,datos,nclasificadores=None):
+        if nclasificadores == None:
+            nclasificadores = len(self.clasificadores)
+
+        aciertos = 0
+
+        for i in range(datos.shape[0]):
+            predic = []
+
+            for n in range(nclasificadores):
+                predic.append(self.predicciones[n][i])
+
+            if stats.mode(predic)[0][0] == 1.0:
+                aciertos+=1.0
+
+        return aciertos/datos.shape[0] # devuelve el porcentaje de aciertos
 
     def predict(self,datos):
         '''
