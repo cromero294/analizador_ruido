@@ -25,9 +25,12 @@ def plotModel(x,y,clase,clf,title,diccionarios):
         z1 = clf.predict_proba(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])[:, 1]
         z2 = clf.predict_proba(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])[:, 1]
 
-    z_list = [z1, z2, list(map(lambda x, y: x + y, z1, z2))]
+    z_list = [z1, z2, [], z1, z2, list(map(lambda x, y: x + y, z1, z2))] # Anyado z1 y z2 al final para poder pintarlas sin puntos en el mismo bucle
 
     for i in range(len(z_list)):
+        if i == 2:
+            continue
+
         plt.subplot(2, 3, i+1)
 
         z = np.array(z_list[i])
@@ -36,21 +39,20 @@ def plotModel(x,y,clase,clf,title,diccionarios):
         cm_bright = ListedColormap(['#FF0000', '#0000FF'])
         #ax = plt.subplot(1, 1, 1)
         plt.contourf(xx, yy, z, cmap=cm, alpha=.8)
-        plt.contour(xx, yy, z, [0.5], linewidths=[2], colors=['k'])
+        #plt.contour(xx, yy, z, [0.1], linewidths=[0.5], colors=['k'])
 
-        if i != 2:
+        if i == 0 or i == 1:
             if clase is not None:
-                plt.scatter(x[clase==0.], y[clase==0.], c='#FF0000')
-                plt.scatter(x[clase==1.], y[clase==1.], c='#0000FF')
+                plt.scatter(x[clase==0.], y[clase==0.], marker = 'o', c='green')
+                plt.scatter(x[clase==1.], y[clase==1.], marker = '_', c='yellow')
             else:
                 plt.plot(x,y,'g', linewidth=3)
 
         plt.gca().set_xlim(xx.min(), xx.max())
         plt.gca().set_ylim(yy.min(), yy.max())
         plt.grid(True)
-        plt.xlabel("X")
-        plt.ylabel("Y")
-        plt.title(title + " " + str(i+1))
+
+    plt.tight_layout()
 
 def plotClases(datos, titulo):
     for dato in datos:

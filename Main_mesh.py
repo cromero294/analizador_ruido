@@ -25,9 +25,10 @@ try:
     El score se mide suponiendo que el dataset no tiene nada de ruido.
     '''
 
-    dataset=Datos('Datasets/example1.data')
+    dataset=Datos('Datasets/example4.data')
 
     num_particiones = 10
+    num_arboles = 100
 
     #estrategia = EstrategiaParticionado.ValidacionCruzada(num_particiones)
     estrategia = EstrategiaParticionado.ValidacionSimple(1, 80)
@@ -44,7 +45,7 @@ try:
     datostrain = dataset.extraeDatos(particiones[0].getTrain())
     datostest = dataset.extraeDatos(particiones[0].getTest())
 
-    clfTree,datos_cambiados = cambiaClase.entrenamiento(datostrain, 100, 0.5)
+    clfTree,datos_cambiados = cambiaClase.entrenamiento(datostrain, num_arboles, 0.5)
 
     score_final_tree += clfTree.score(datostest)
     clasificaciones = clfTree.predict(datostest)
@@ -58,19 +59,10 @@ try:
 
     print("------------PLOT------------")
 
+    plotModel(datostest[:,0],datostest[:,1],np.array(clfTree.predict(datostest)),clfTree,"",dataset.getDiccionarios())
 
-    particiones = estrategia.creaParticiones(dataset)
-
-    datostrain = dataset.extraeDatos(particiones[0].getTrain())
-    datostest = dataset.extraeDatos(particiones[0].getTest())
-
-    #clasificador.entrenamiento(dataset.extraeDatos(particiones[0].getTrain()), dataset.getNominalAtributos(), dataset.getDiccionarios(), False)
-    clfTree,_ = cambiaClase.entrenamiento(datostrain, 1, 0.5)
-
-    plotModel(datostest[:,0],datostest[:,1],np.array(clfTree.predict(datostest)),clfTree,"Frontera 100 arbol decision",dataset.getDiccionarios())
-
-    plt.show()
-    #plt.savefig("Imagenes/D_example4_mesh1_ceros.eps")
+    #plt.show()
+    plt.savefig("Imagenes/example4_mesh100.eps")
 
     #print clf.predict([[17.99,10.38,122.8,1001,0.1184,0.2776,0.3001,0.1471,0.2419,0.07871,1.095,0.9053,8.589,153.4,0.006399,0.04904,0.05373,0.01587,0.03003,0.006193,25.38,17.33,184.6,2019,0.1622,0.6656,0.7119,0.2654,0.4601,0.1189,1.0],
     #                   [13.05,19.31,82.61,527.2,0.0806,0.03789,0.000692,0.004167,0.1819,0.05501,0.404,1.214,2.595,32.96,0.007491,0.008593,0.000692,0.004167,0.0219,0.00299,14.23,22.25,90.24,624.1,0.1021,0.06191,0.001845,0.01111,0.2439,0.06289,0.0]])
