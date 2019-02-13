@@ -15,32 +15,19 @@ def plotModel(x,y,clase_orig,clase,clf,title,diccionarios):
 
     xx, yy = np.meshgrid(np.arange(x_min, x_max, hx), np.arange(y_min, y_max, hy))
 
-    #############################################
-    ##########     CLASIFICACION     ############
-    #############################################
-
-    '''
-    Clasificacion del Ravel con el entrenamiento de los datos de test originales
-    '''
-    clasificador = tree.DecisionTreeClassifier()
-    clasificador.fit(np.c_[x,y], clase_orig)
-    clases = clasificador.predict(np.c_[xx.ravel(), yy.ravel()])
-
     if isinstance(clf, Conjunto.Conjunto):
-        #z = clf.predict(np.c_[xx.ravel(), yy.ravel(), clases])
-        z = clf.predict(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
-        #z = clf.predict(np.c_[xx.ravel(), yy.ravel(), np.zeros(np.c_[xx.ravel(), yy.ravel()].shape[0])])
+        z1 = clf.predict(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
+        z2 = clf.predict(np.c_[xx.ravel(), yy.ravel(), np.zeros(np.c_[xx.ravel(), yy.ravel()].shape[0])])
     elif hasattr(clf, "decision_function"):
-        z = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), clases])
-        #z = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
-        #z = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), np.zeros(np.c_[xx.ravel(), yy.ravel()].shape[0])])
+        z1 = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
+        z2 = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), np.zeros(np.c_[xx.ravel(), yy.ravel()].shape[0])])
     else:
-        z = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), clases])
-        #z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])[:, 1]
-        #z = clf.predict_proba(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])[:, 1]
+        z1 = clf.predict_proba(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])[:, 1]
+        z2 = clf.predict_proba(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])[:, 1]
+
+    z_list = [z1, z2, list(map(lambda x, y: x + y, z1, z2))]
 
     z = np.array(z)
-
     z = z.reshape(xx.shape)
     cm = plt.cm.RdBu
     cm_bright = ListedColormap(['#FF0000', '#0000FF'])

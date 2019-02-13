@@ -104,4 +104,23 @@ C_example1_mesh.eps, C_example3_mesh.eps, C_example4_mesh.eps
   - Descripcion:                Se observa la clasificación de los datos y la forma de clasificar del conjunto. Para
                                 realizar la imagen utilizamos los datos de test y la función plotModel, en la cual
                                 generamos un conjunto de datos con .ravel y lo clasificamos para obtener su supuesta
-                                clase real para, a continuación, generar el mesh del algoritmo de clasificación. 
+                                clase real para, a continuación, generar el mesh del algoritmo de clasificación.
+
+
+-------------------------------------------------------------------------------------------------------------------------------------
+
+moons_20000.eps, moons_20000_impares.eps
+
+  - Main origen:                Main_general.py
+  - Datos entrenamiento:        X,y=make_moons(n_samples=500, shuffle=True, noise=0.5, random_state=None), variando por iteracion
+  - Datos test:                 Xt,yt=make_moons(n_samples=20000, shuffle=True, noise=0.5, random_state=None), fijo
+  - Numero datos entrenamiento: 500
+  - Numero datos test:          20000
+  - Funcion entrenamiento:      entrenamiento(datostrain, 100, 0.5)
+  - Conjunto clasificadores:    100, tree.DecisionTreeClassifier()
+  - Descripcion:                Se puede observar el porcentaje de error frente al numero de clasificadores utilizado en el
+                                conjunto. En una de las pruebas se hace con comprobaciones pares y en el otro con impares.
+                                La forma de realizarlo ha sido la siguiente: Se genera un conjunto de test fijo y después se
+                                realizan 100 iteraciones generando nuevos datos de entrenamiento por cada iteracion. Se clasifican
+                                los datos de test con 1 - 100 (arboles en este caso) y sigue el bucle. Para clasificar primero se
+                                guardan las votaciones con todos los arboles y luego se clasifica.
