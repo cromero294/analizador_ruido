@@ -65,7 +65,7 @@ try:
     datostest = dataset.extraeDatos(particiones[0].getTest())
 
     #clasificador.entrenamiento(dataset.extraeDatos(particiones[0].getTrain()), dataset.getNominalAtributos(), dataset.getDiccionarios(), False)
-    clfTree,_ = cambiaClase.entrenamiento(datostrain, 100, 0.5)
+    clfTree,_ = cambiaClase.entrenamiento(datostrain, 1, 0.5)
 
     plotModel(datostest[:,0],datostest[:,1],np.array(clfTree.predict(datostest)),clfTree,"Frontera 100 arbol decision",dataset.getDiccionarios())
 
