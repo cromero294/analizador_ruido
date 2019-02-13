@@ -6,7 +6,7 @@ from sklearn import tree
 
 # Autor Luis Lago y Manuel Sanchez Montanes
 # Modificada por Gonzalo
-def plotModel(x,y,clase_orig,clase,clf,title,diccionarios):
+def plotModel(x,y,clase,clf,title,diccionarios):
     x_min, x_max = x.min() - .2, x.max() + .2
     y_min, y_max = y.min() - .2, y.max() + .2
 
@@ -27,26 +27,30 @@ def plotModel(x,y,clase_orig,clase,clf,title,diccionarios):
 
     z_list = [z1, z2, list(map(lambda x, y: x + y, z1, z2))]
 
-    z = np.array(z)
-    z = z.reshape(xx.shape)
-    cm = plt.cm.RdBu
-    cm_bright = ListedColormap(['#FF0000', '#0000FF'])
-    #ax = plt.subplot(1, 1, 1)
-    plt.contourf(xx, yy, z, cmap=cm, alpha=.8)
-    plt.contour(xx, yy, z, [0.5], linewidths=[2], colors=['k'])
+    for i in range(len(z_list)):
+        plt.subplot(2, 3, i+1)
 
-    if clase is not None:
-        plt.scatter(x[clase==0.], y[clase==0.], c='#FF0000')
-        plt.scatter(x[clase==1.], y[clase==1.], c='#0000FF')
-    else:
-        plt.plot(x,y,'g', linewidth=3)
+        z = np.array(z_list[i])
+        z = z.reshape(xx.shape)
+        cm = plt.cm.RdBu
+        cm_bright = ListedColormap(['#FF0000', '#0000FF'])
+        #ax = plt.subplot(1, 1, 1)
+        plt.contourf(xx, yy, z, cmap=cm, alpha=.8)
+        plt.contour(xx, yy, z, [0.5], linewidths=[2], colors=['k'])
 
-    plt.gca().set_xlim(xx.min(), xx.max())
-    plt.gca().set_ylim(yy.min(), yy.max())
-    plt.grid(True)
-    plt.xlabel("X")
-    plt.ylabel("Y")
-    plt.title(title)
+        if i != 2:
+            if clase is not None:
+                plt.scatter(x[clase==0.], y[clase==0.], c='#FF0000')
+                plt.scatter(x[clase==1.], y[clase==1.], c='#0000FF')
+            else:
+                plt.plot(x,y,'g', linewidth=3)
+
+        plt.gca().set_xlim(xx.min(), xx.max())
+        plt.gca().set_ylim(yy.min(), yy.max())
+        plt.grid(True)
+        plt.xlabel("X")
+        plt.ylabel("Y")
+        plt.title(title + " " + str(i+1))
 
 def plotClases(datos, titulo):
     for dato in datos:
