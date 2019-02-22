@@ -17,8 +17,8 @@ class ClasificadorRuido:
 
         for epoca in range(self.nepocas):
             clfTree = tree.DecisionTreeClassifier()
-            datos_cambiados = self.cambiarClase(x, y)
-            clfTree.fit(datos_cambiados[:,:-1], datos_cambiados[:,-1])
+            X_cambiado, y_cambiado = self.cambiarClase(x, y)
+            clfTree.fit(X_cambiado, y_cambiado)
             self.clasificadores.append(clfTree)
 
     def score(self, x, y, clase_atrib=None):
@@ -86,7 +86,7 @@ class ClasificadorRuido:
 
         numDatos = datos.shape[0]
         porcentaje = int(numDatos * self.perc)
-        clases = datos[:,-1].copy()
+
         datos_nuevos = datos.copy()
 
         arrayAleatorio = range(0, numDatos)
@@ -96,6 +96,6 @@ class ClasificadorRuido:
         for num in arrayAleatorio[:porcentaje]:
             datos_nuevos[num,-1] = 1 - datos_nuevos[num,-1]
 
-        clase_bien_mal_clasificado = [(1.0 if datos_nuevos[i,-1] == clases[i] else 0.0) for i in range(0,numDatos)]
+        clase_bien_mal_clasificado = [(1.0 if datos_nuevos[i,-1] == datos[i,-1] else 0.0) for i in range(0,numDatos)]
 
-        return np.column_stack((datos_nuevos, np.array(clase_bien_mal_clasificado)))
+        return datos_nuevos, np.array(clase_bien_mal_clasificado)
