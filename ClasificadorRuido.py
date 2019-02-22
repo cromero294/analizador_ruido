@@ -51,6 +51,7 @@ class ClasificadorRuido:
         clasificacion_final = [[0, 0] for i in range(x.shape[0])]
 
         if clase_atrib == None:
+
             probs1 = self.predict_proba(x, 1)
             probs0 = self.predict_proba(x, 0)
 
@@ -58,28 +59,29 @@ class ClasificadorRuido:
                 clasificacion_final[i][0] += (probs0[i][0] + probs1[i][0])/2
                 clasificacion_final[i][1] += (probs0[i][1] + probs1[i][1])/2
 
-        elif clase_atrib == 1:
-            datos = np.ones((x.shape[0], x.shape[1]+1))
-            datos[:,:-1] = x
-            x = datos
-        elif clase_atrib == 0:
-            datos = np.zeros((x.shape[0], x.shape[1]+1))
+        else:
+
+            if clase_atrib == 1:
+                datos = np.ones((x.shape[0], x.shape[1]+1))
+            elif clase_atrib == 0:
+                datos = np.zeros((x.shape[0], x.shape[1]+1))
+            
             datos[:,:-1] = x
             x = datos
 
-        if clase_atrib != None:
-            for clasificador in self.clasificadores:
-                for i,clf in enumerate(clasificador.predict_proba(x)):
-                    if clase_atrib == 1:
-                        clasificacion_final[i][1] += clf[1]
-                        clasificacion_final[i][0] += clf[0]
-                    elif clase_atrib == 0:
-                        clasificacion_final[i][1] += clf[0]
-                        clasificacion_final[i][0] += clf[1]
+            if clase_atrib != None:
+                for clasificador in self.clasificadores:
+                    for i,clf in enumerate(clasificador.predict_proba(x)):
+                        if clase_atrib == 1:
+                            clasificacion_final[i][1] += clf[1]
+                            clasificacion_final[i][0] += clf[0]
+                        elif clase_atrib == 0:
+                            clasificacion_final[i][1] += clf[0]
+                            clasificacion_final[i][0] += clf[1]
 
-            for i in range(x.shape[0]):
-                clasificacion_final[i][0] /= len(self.clasificadores)
-                clasificacion_final[i][1] /= len(self.clasificadores)
+                for i in range(x.shape[0]):
+                    clasificacion_final[i][0] /= len(self.clasificadores)
+                    clasificacion_final[i][1] /= len(self.clasificadores)
 
         return clasificacion_final
 
