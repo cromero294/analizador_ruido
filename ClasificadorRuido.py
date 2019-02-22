@@ -12,19 +12,14 @@ class ClasificadorRuido:
         self.nepocas = nepocas
         self.perc = perc
 
-    def setClasificadores(self, clasificadores):
-        self.clasificadores = clasificadores
-
     def fit(self, x, y):
-        clasificadores = []
+        self.clasificadores = []
 
         for epoca in range(self.nepocas):
             clfTree = tree.DecisionTreeClassifier()
             datos_cambiados = self.cambiarClase(x, y)
             clfTree.fit(datos_cambiados[:,:-1], datos_cambiados[:,-1])
-            clasificadores.append(clfTree)
-
-        self.setClasificadores(clasificadores)
+            self.clasificadores.append(clfTree)
 
     def score(self, x, y, clase_atrib=None):
         aciertos = 0
