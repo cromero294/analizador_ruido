@@ -20,10 +20,10 @@ try:
 
     clf = ClasificadorRuido()
     clase_atrib = [0, 1, None]
-    linestyle = ['.-', ':', '-']
+    linestyle = ['-.', ':', '-']
     color = ['red', 'olive', 'skyblue']
 
-    for i,elem in enumerate(clase_atrib):
+    for k,elem in enumerate(clase_atrib):
         print "-------------------ATRIB-------------------"
 
         iteracion = 1
@@ -45,10 +45,11 @@ try:
         error_final = list(map(lambda x: x/num_trees, tasas_error))
 
         print "Tasa de error: " + str(error_final)
-
-        plt.plot(range(1,101,2),error_final[::2],linestyle=linestyle[i],color=color[i])
+        print k
+        plt.plot(range(1,101,2),error_final[::2],linestyle=linestyle[k],color=color[k])
 
     #plt.show()
+    plt.legend(('0', '1', '0 - 1'),loc='upper right')
     plt.title("Error - Clasificadores")
     plt.savefig("Imagenes/error_moons_tres_clases.eps")
 

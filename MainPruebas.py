@@ -1,28 +1,33 @@
-# from ClasificadorRuido import ClasificadorRuido
-# from Datos import Datos
-# import EstrategiaParticionado
-# from sklearn.datasets import make_moons
-#
-# from sklearn import tree
-# import numpy as np
-#
-# X,y=make_moons(n_samples=100, shuffle=True, noise=0.5, random_state=None)
-# Xt,yt=make_moons(n_samples=200, shuffle=True, noise=0.5, random_state=None)
-#
-# clf = ClasificadorRuido()
-# clf.fit(X, y)
-#
-# print clf.score(Xt, yt, 0)
-# clf.predict(Xt, 0)
-# clf.predict_proba(Xt, None, True)
-# clf.predict_error(Xt)
-# print clf.score_error(Xt, yt)
+from ClasificadorRuido import ClasificadorRuido
+from Datos import Datos
+import EstrategiaParticionado
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import make_moons
 
-import matplotlib.pyplot as plt
+from sklearn import tree
+import numpy as np
 
-plt.plot(range(1,10),range(1,10),color='skyblue')
-plt.plot(range(1,10),range(3,12),color='olive',linestyle=':')
-plt.plot(range(1,10),range(5,14),color='red',linestyle='-.')
+X,y=make_moons(n_samples=500, shuffle=True, noise=0.5, random_state=None)
+Xt,yt=make_moons(n_samples=2, shuffle=True, noise=0.5, random_state=None)
 
+dataset=Datos('Datasets/example1.data')
+estrategia = EstrategiaParticionado.ValidacionSimple(1, 95)
+particiones = estrategia.creaParticiones(dataset)
+datostrain = dataset.extraeDatos(particiones[0].getTrain())
+datostest = dataset.extraeDatos(particiones[0].getTest())
 
-plt.show()
+clf = ClasificadorRuido(2)
+clfRandom = RandomForestClassifier(n_estimators=100)
+
+clfRandom.fit(X,y)
+
+clf.fit(X, y)
+clf.predict_error(Xt)
+
+print yt
+
+print "Ceros: " + str(clf.score(Xt, yt, 0))
+print "Unos: " + str(clf.score(Xt, yt, 1))
+print "Score: " + str(clf.score(Xt, yt))
+print "Score error: " + str(clf.score_error(Xt, yt))
+print "Random forest: " + str(clfRandom.score(Xt, yt))

@@ -24,22 +24,26 @@ class ClasificadorRuido:
     def score(self, x, y, clase_atrib=None):
         aciertos = 0
 
-        for i,pred in enumerate(self.predict(x, clase_atrib)):
+        pre = self.predict(x, clase_atrib)
+
+        print pre
+
+        for i,pred in enumerate(pre):
             if pred == y[i]:
                 aciertos += 1.
 
         return aciertos/x.shape[0]
 
     def predict(self, x, clase_atrib=None):
-        predicciones = []
+        prediccs = []
 
         for pred in self.predict_proba(x, clase_atrib):
             if pred[0] > pred[1]:
-                predicciones.append(0.)
+                prediccs.append(0.)
             else:
-                predicciones.append(1.)
+                prediccs.append(1.)
 
-        return predicciones
+        return prediccs
 
     def predict_proba(self, x, clase_atrib=None, save=False):
         clasificacion = []
@@ -52,11 +56,19 @@ class ClasificadorRuido:
 
             if save:
                 self.pred = []
-                for x,y in zip(self.pred_unos,self.pred_ceros):
+                print "----------------------------------"
+                print self.pred_ceros, probs0
+                print self.pred_unos, probs1
+                print "----------------------------------"
+                for z,y in zip(self.pred_ceros,self.pred_unos):
                     predaux = []
-                    for i in range(len(x)):
-                        predaux.append([(x[i][0] + y[i][1])/2, (x[i][1] + y[i][0])/2])
+                    for i in range(len(z)):
+                        #print z,y
+                        predaux.append([(z[i][1] + y[i][0])/2, (z[i][0] + y[i][1])/2])
+                        #print predaux
                     self.pred.append(predaux)
+                #print self.pred
+            #print probs1
 
             for i in range(x.shape[0]):
                 clasificacion_final[i][0] += (probs0[i][0] + probs1[i][0])/2
@@ -109,6 +121,9 @@ class ClasificadorRuido:
             for n in range(nclasificadores):
                 predic.append(self.predicciones[n][i])
 
+            #print stats.mode(predic)[0][0]
+
+            print stats.mode(predic)[0][0]
             if stats.mode(predic)[0][0] == clases[i]:
                 aciertos+=1.0
 
@@ -142,6 +157,8 @@ class ClasificadorRuido:
             aux.append(predicciones)
 
         self.predicciones = aux
+        print aux
+        print "----------------------------------"
 
     def cambiarClase(self, x, y):
 
