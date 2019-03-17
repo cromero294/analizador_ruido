@@ -1,12 +1,12 @@
-import Conjunto
 from matplotlib.colors import ListedColormap
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import tree
+from ClasificadorRuido import *
 
 # Autor Luis Lago y Manuel Sanchez Montanes
 # Modificada por Gonzalo
-def plotModel(x,y,clase,clf,title,diccionarios):
+def plotModel(x,y,clase,clf):
     x_min, x_max = x.min() - .2, x.max() + .2
     y_min, y_max = y.min() - .2, y.max() + .2
 
@@ -15,15 +15,15 @@ def plotModel(x,y,clase,clf,title,diccionarios):
 
     xx, yy = np.meshgrid(np.arange(x_min, x_max, hx), np.arange(y_min, y_max, hy))
 
-    if isinstance(clf, Conjunto.Conjunto):
-        z1 = clf.predict(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
-        z2 = clf.predict(np.c_[xx.ravel(), yy.ravel(), np.zeros(np.c_[xx.ravel(), yy.ravel()].shape[0])])
+    if isinstance(clf, ClasificadorRuido):
+        z1 = clf.predict(np.c_[xx.ravel(), yy.ravel()], 1)
+        z2 = clf.predict(np.c_[xx.ravel(), yy.ravel()], 0)
     elif hasattr(clf, "decision_function"):
-        z1 = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])
-        z2 = clf.decision_function(np.c_[xx.ravel(), yy.ravel(), np.zeros(np.c_[xx.ravel(), yy.ravel()].shape[0])])
+        z1 = clf.decision_function(np.c_[xx.ravel(), yy.ravel()], 1)
+        z2 = clf.decision_function(np.c_[xx.ravel(), yy.ravel()], 0)
     else:
-        z1 = clf.predict_proba(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])[:, 1]
-        z2 = clf.predict_proba(np.c_[xx.ravel(), yy.ravel(), np.ones(np.c_[xx.ravel(), yy.ravel()].shape[0])])[:, 1]
+        z1 = clf.predict_proba(np.c_[xx.ravel(), yy.ravel()], 1)[:, 1]
+        z2 = clf.predict_proba(np.c_[xx.ravel(), yy.ravel()], 0)[:, 1]
 
     z_list = [z1, z2, [], z1, z2, list(map(lambda x, y: x + y, z1, z2))] # Anyado z1 y z2 al final para poder pintarlas sin puntos en el mismo bucle
 

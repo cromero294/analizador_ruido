@@ -2,29 +2,30 @@ from ClasificadorRuido import ClasificadorRuido
 from Datos import Datos
 import EstrategiaParticionado
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.datasets import make_moons
+from sklearn.datasets import make_moons, make_circles
 
 from sklearn import tree
 import numpy as np
 
-X,y=make_moons(n_samples=500, shuffle=True, noise=0.5, random_state=None)
-Xt,yt=make_moons(n_samples=2, shuffle=True, noise=0.5, random_state=None)
+# X,y=make_moons(n_samples=500, shuffle=True, noise=0.5, random_state=None)
+# Xt,yt=make_moons(n_samples=20000, shuffle=True, noise=0.5, random_state=None)
 
-dataset=Datos('Datasets/example1.data')
-estrategia = EstrategiaParticionado.ValidacionSimple(1, 95)
-particiones = estrategia.creaParticiones(dataset)
-datostrain = dataset.extraeDatos(particiones[0].getTrain())
-datostest = dataset.extraeDatos(particiones[0].getTest())
+X,y=make_circles(n_samples=500, noise=0.5, factor=0.5, random_state=None)
+Xt,yt=make_circles(n_samples=1000, noise=0.5, factor=0.5, random_state=None)
 
-clf = ClasificadorRuido(2)
+# dataset=Datos('Datasets/example1.data')
+# estrategia = EstrategiaParticionado.ValidacionSimple(1, 95)
+# particiones = estrategia.creaParticiones(dataset)
+# datostrain = dataset.extraeDatos(particiones[0].getTrain())
+# datostest = dataset.extraeDatos(particiones[0].getTest())
+
+clf = ClasificadorRuido()
 clfRandom = RandomForestClassifier(n_estimators=100)
 
 clfRandom.fit(X,y)
 
 clf.fit(X, y)
 clf.predict_error(Xt)
-
-print yt
 
 print "Ceros: " + str(clf.score(Xt, yt, 0))
 print "Unos: " + str(clf.score(Xt, yt, 1))

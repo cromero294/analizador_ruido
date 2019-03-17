@@ -16,7 +16,7 @@ class ClasificadorRuido:
         self.clasificadores = []
 
         for epoca in range(self.nepocas):
-            clfTree = tree.DecisionTreeClassifier()
+            clfTree = tree.DecisionTreeClassifier(max_depth=5)
             X_cambiado, y_cambiado = self.cambiarClase(x, y)
             clfTree.fit(X_cambiado, y_cambiado)
             self.clasificadores.append(clfTree)
@@ -25,8 +25,6 @@ class ClasificadorRuido:
         aciertos = 0
 
         pre = self.predict(x, clase_atrib)
-
-        print pre
 
         for i,pred in enumerate(pre):
             if pred == y[i]:
@@ -56,19 +54,11 @@ class ClasificadorRuido:
 
             if save:
                 self.pred = []
-                print "----------------------------------"
-                print self.pred_ceros, probs0
-                print self.pred_unos, probs1
-                print "----------------------------------"
                 for z,y in zip(self.pred_ceros,self.pred_unos):
                     predaux = []
                     for i in range(len(z)):
-                        #print z,y
                         predaux.append([(z[i][1] + y[i][0])/2, (z[i][0] + y[i][1])/2])
-                        #print predaux
                     self.pred.append(predaux)
-                #print self.pred
-            #print probs1
 
             for i in range(x.shape[0]):
                 clasificacion_final[i][0] += (probs0[i][0] + probs1[i][0])/2
@@ -123,8 +113,12 @@ class ClasificadorRuido:
 
             #print stats.mode(predic)[0][0]
 
-            print stats.mode(predic)[0][0]
-            if stats.mode(predic)[0][0] == clases[i]:
+            #print stats.mode(predic)
+            moda = stats.mode(predic)[0][0]
+            if stats.mode(predic)[1][0] == (nclasificadores / 2):
+                moda = 0.0
+
+            if moda == clases[i]:
                 aciertos+=1.0
 
         return aciertos/datos.shape[0]
@@ -157,8 +151,8 @@ class ClasificadorRuido:
             aux.append(predicciones)
 
         self.predicciones = aux
-        print aux
-        print "----------------------------------"
+        # print aux
+        # print "----------------------------------"
 
     def cambiarClase(self, x, y):
 
