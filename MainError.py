@@ -15,9 +15,9 @@ from sklearn.datasets import make_moons, make_circles, make_classification
 import matplotlib.pyplot as plt
 
 try:
-    # Xt,yt=make_moons(n_samples=20000, shuffle=True, noise=0.5, random_state=None)
-    # Xt,yt=make_circles(n_samples=20000, shuffle=True, noise=0.5, random_state=None)
-    Xt,yt=make_classification(n_samples=20000, shuffle=True, random_state=None)
+    # Xt,yt=make_moons(n_samples=20000, shuffle=True, noise=0.2, random_state=None)
+    Xt,yt=make_circles(n_samples=20000, shuffle=True, noise=0.2, random_state=None)
+    # Xt,yt=make_classification(n_samples=20000, shuffle=True, random_state=None)
     # datostest = np.column_stack((Xt, yt))
 
     clf = ClasificadorRuido()
@@ -35,9 +35,9 @@ try:
         for i in range(100):
             print "Iteracion " + str(i+1) + "/100"
 
-            # X,y=make_moons(n_samples=500, shuffle=True, noise=0.5, random_state=None)
-            # X,y=make_circles(n_samples=500, shuffle=True, noise=0.5, random_state=None)
-            X,y=make_classification(n_samples=500, shuffle=True, random_state=None)
+            # X,y=make_moons(n_samples=500, shuffle=True, noise=0.2, random_state=None)
+            X,y=make_circles(n_samples=500, shuffle=True, noise=0.2, random_state=None)
+            # X,y=make_classification(n_samples=500, shuffle=True, random_state=None)
 
             clf.fit(X, y)
             clf.predict_proba_error(Xt, clase_atrib=elem)
@@ -55,7 +55,7 @@ try:
     #plt.show()
     plt.legend(('0', '1', '0 - 1'),loc='upper right')
     plt.title("Error - Clasificadores")
-    plt.savefig("Imagenes/error_classification_tres_clases.eps")
+    plt.savefig("Imagenes/circles_error.eps")
 
 except ValueError as e:
     print e

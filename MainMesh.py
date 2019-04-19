@@ -10,27 +10,21 @@ from sklearn.datasets import make_moons, make_circles, make_classification
 import matplotlib.pyplot as plt
 
 try:
-    num_arboles = 100
+    num_arboles = 1
 
     ###############################
     #########    MOONS    #########
     ###############################
-    # X,y=make_moons(n_samples=500, shuffle=True, noise=0.5, random_state=None)
-    # Xt,yt=make_moons(n_samples=1000, shuffle=True, noise=0.5, random_state=None)
+    # X,y=make_moons(n_samples=500, shuffle=True, noise=0.2, random_state=None)
+    # Xt,yt=make_moons(n_samples=100, shuffle=True, noise=0.2, random_state=None)
 
     ###############################
     ########    CIRCLES    ########
     ###############################
-    # X,y=make_circles(n_samples=500, noise=0.5, factor=0.5, random_state=None)
-    # Xt,yt=make_circles(n_samples=1000, noise=0.5, factor=0.5, random_state=None)
+    X,y=make_circles(n_samples=500, noise=0.2, factor=0.2, random_state=None)
+    Xt,yt=make_circles(n_samples=100, noise=0.2, factor=0.2, random_state=None)
 
-    ##############################
-    ########    LINEAL    ########
-    ##############################
-    X,y=make_classification(n_features=2, n_samples=500, n_redundant=0, n_informative=2, random_state=None, n_clusters_per_class=1)
-    Xt,yt=make_classification(n_features=2, n_samples=1000, n_redundant=0, n_informative=2, random_state=None, n_clusters_per_class=1)
-
-    clf = ClasificadorRuido()
+    clf = ClasificadorRuido(num_arboles)
     clf.fit(X, y)
 
     print("Score: " + str(clf.score(Xt, yt)))
@@ -42,10 +36,12 @@ try:
 
     print("------------PLOT------------")
 
-    plotModel(Xt[:,0],Xt[:,1],yt,clf)
+    plotModel(Xt[:,0],Xt[:,1],yt,clf,1)
 
     #plt.show()
-    plt.savefig("Imagenes/circles_mesh100.eps")
+    # formato: conjuntodedatos_numarboles_<parametros_>_numeroejemplostest.eps
+    # plt.show()
+    plt.savefig("Imagenes/circles_1_02_probs_100.eps")
 
 except ValueError as e:
     print(e)
