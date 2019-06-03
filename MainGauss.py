@@ -19,24 +19,26 @@ try:
     Xt = np.c_[xt1, xt2]
 
     colors = ['blue', 'red']
+    class_atrib = [0, 1, "both"]
 
     # plt.scatter(np.array(xt1), np.array(xt2), marker = 'o', c=np.array(yt), cmap=matplotlib.colors.ListedColormap(colors))
 
-    fig, axs = plt.subplots(1, 3, figsize=(16, 3), sharey=True)
+    for zz in class_atrib:
+        fig, axs = plt.subplots(1, 4, figsize=(12, 3), sharey=True)
 
-    num = [1, 11, 101]
+        num = [1, 11, 101, 1001]
 
-    for i in range(len(axs)):
-        num_arboles = num[i]
+        for i in range(len(axs)):
+            num_arboles = num[i]
 
-        clf = ClasificadorRuido(num_arboles)
-        clf.fit(X, y)
+            clf = ClasificadorRuido(num_arboles)
+            clf.fit(X, y)
 
-        im1 = plotModel_arboles(np.array(xt1),np.array(xt2),np.array(yt),clf,axs[i],0,1)
-        fig.colorbar(im1, ax=axs[i], ticks=range(0,20), label='class')
+            im1 = plotModel_arboles(np.array(xt1),np.array(xt2),np.array(yt),clf,axs[i],zz,True)
+            fig.colorbar(im1, ax=axs[i], ticks=range(0,20), label='class')
 
-    # plt.show()
-    plt.savefig("Imagenes/gaussiana_3_0.eps")
+        # plt.show()
+        plt.savefig("Imagenes/gaussiana_"+ str(zz) +"_both_PRUEBA.eps")
 
 except ValueError as e:
     print(e)

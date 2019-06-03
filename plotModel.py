@@ -79,20 +79,19 @@ def plotModel_arboles(x,y,clase,clf,axs,ind,pred_prob=None):
     xx, yy = np.meshgrid(np.arange(x_min, x_max, hx), np.arange(y_min, y_max, hy))
 
     if pred_prob == None:
-        z0 = clf.predict(np.c_[xx.ravel(), yy.ravel()], 0)
-        z1 = clf.predict(np.c_[xx.ravel(), yy.ravel()], 1)
-        z_both = clf.predict(np.c_[xx.ravel(), yy.ravel()])
+        if ind == 0:
+            aux = clf.predict(np.c_[xx.ravel(), yy.ravel()], 0)
+        elif ind == 1:
+            aux = clf.predict(np.c_[xx.ravel(), yy.ravel()], 1)
+        else:
+            aux = clf.predict(np.c_[xx.ravel(), yy.ravel()])
     else:
-        z0 = np.array(clf.predict_proba(np.c_[xx.ravel(), yy.ravel()], 0))[:, 1]
-        z1 = np.array(clf.predict_proba(np.c_[xx.ravel(), yy.ravel()], 1))[:, 1]
-        z_both = np.array(clf.predict_proba(np.c_[xx.ravel(), yy.ravel()]))[:, 1]
-
-    if ind == 0:
-        aux = z0
-    elif ind == 1:
-        aux = z1
-    else:
-        aux = z_both
+        if ind == 0:
+            aux = np.array(clf.predict_proba(np.c_[xx.ravel(), yy.ravel()], 0))[:, 1]
+        elif ind == 1:
+            aux = np.array(clf.predict_proba(np.c_[xx.ravel(), yy.ravel()], 1))[:, 1]
+        else:
+            aux = np.array(clf.predict_proba(np.c_[xx.ravel(), yy.ravel()]))[:, 1]
 
     z = np.array(aux)
     z = z.reshape(xx.shape)

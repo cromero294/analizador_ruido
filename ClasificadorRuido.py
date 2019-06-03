@@ -8,8 +8,8 @@ from scipy import stats
 
 class ClasificadorRuido:
 
-    def __init__(self, nepocas=100, perc=0.5):
-        self.nepocas = nepocas
+    def __init__(self, n_trees=101, perc=0.5):
+        self.nepocas = n_trees
         self.perc = perc
 
     def fit(self, x, y):
@@ -17,14 +17,14 @@ class ClasificadorRuido:
 
         for epoca in range(self.nepocas):
             clfTree = tree.DecisionTreeClassifier()
-            X_cambiado, y_cambiado = self.cambiarClase(x, y)
+            X_cambiado, y_cambiado = self.change_class(x, y)
             clfTree.fit(X_cambiado, y_cambiado)
             self.clasificadores.append(clfTree)
 
-    def score(self, x, y, clase_atrib=None):
+    def score(self, x, y, class_atrib=None):
         aciertos = 0
 
-        pre = self.predict(x, clase_atrib)
+        pre = self.predict(x, class_atrib)
 
         for i,pred in enumerate(pre):
             if pred == y[i]:
@@ -32,10 +32,10 @@ class ClasificadorRuido:
 
         return aciertos/x.shape[0]
 
-    def predict(self, x, clase_atrib=None):
+    def predict(self, x, class_atrib=None):
         prediccs = []
 
-        for pred in self.predict_proba(x, clase_atrib):
+        for pred in self.predict_proba(x, class_atrib):
             if pred[0] > pred[1]:
                 prediccs.append(0.)
             else:
@@ -43,11 +43,11 @@ class ClasificadorRuido:
 
         return prediccs
 
-    def predict_proba(self, x, clase_atrib=None):
+    def predict_proba(self, x, class_atrib=None):
         clasificacion = []
         clasificacion_final = [[0, 0] for i in range(x.shape[0])]
 
-        if clase_atrib == None:
+        if class_atrib == None:
             probs1 = self.predict_proba(x, 1)
             probs0 = self.predict_proba(x, 0)
 
@@ -56,9 +56,9 @@ class ClasificadorRuido:
                 clasificacion_final[i][1] += (probs0[i][1] + probs1[i][1])/2
 
         else:
-            if clase_atrib == 1:
+            if class_atrib == 1:
                 datos = np.ones((x.shape[0], x.shape[1]+1))
-            elif clase_atrib == 0:
+            elif class_atrib == 0:
                 datos = np.zeros((x.shape[0], x.shape[1]+1))
 
             datos[:,:-1] = x
@@ -69,10 +69,10 @@ class ClasificadorRuido:
             for clasificador in self.clasificadores:
                 aux = clasificador.predict_proba(x)
                 for i,clf in enumerate(aux):
-                    if clase_atrib == 1:
+                    if class_atrib == 1:
                         clasificacion_final[i][1] += clf[1]
                         clasificacion_final[i][0] += clf[0]
-                    elif clase_atrib == 0:
+                    elif class_atrib == 0:
                         clasificacion_final[i][1] += clf[0]
                         clasificacion_final[i][0] += clf[1]
 
@@ -82,10 +82,10 @@ class ClasificadorRuido:
 
         return clasificacion_final
 
-    def predict_proba_error(self, x, clase_atrib=None):
+    def predict_proba_error(self, x, class_atrib=None):
         clasificacion = []
 
-        if clase_atrib == None:
+        if class_atrib == None:
             probs1 = self.predict_proba_error(x, 1)
             probs0 = self.predict_proba_error(x, 0)
 
@@ -97,10 +97,10 @@ class ClasificadorRuido:
                 self.pred.append(predaux)
 
         else:
-            if clase_atrib == 1:
+            if class_atrib == 1:
                 datos = np.ones((x.shape[0], x.shape[1]+1))
                 self.pred_unos = []
-            elif clase_atrib == 0:
+            elif class_atrib == 0:
                 datos = np.zeros((x.shape[0], x.shape[1]+1))
                 self.pred_ceros = []
 
@@ -109,29 +109,29 @@ class ClasificadorRuido:
 
             for clasificador in self.clasificadores:
                 aux = clasificador.predict_proba(x)
-                if clase_atrib == 1:
+                if class_atrib == 1:
                     self.pred_unos.append(aux)
-                elif clase_atrib == 0:
+                elif class_atrib == 0:
                     self.pred_ceros.append(aux)
 
-    def score_error(self, x, y, nclasificadores=None, clase_atrib=None):
-        if nclasificadores == None:
-            nclasificadores = len(self.clasificadores)
+    def score_error(self, x, y, n_classifiers=None, class_atrib=None):
+        if n_classifiers == None:
+            n_classifiers = len(self.clasificadores)
 
         aux = []
 
-        if clase_atrib == 1:
+        if class_atrib == 1:
             predaux = self.pred_unos
-        if clase_atrib == 0:
+        if class_atrib == 0:
             predaux = self.pred_ceros
-        if clase_atrib == None:
+        if class_atrib == None:
             predaux = self.pred
 
         clasificacion_final = [[0, 0] for i in range(x.shape[0])]
 
-        for pred in predaux[:nclasificadores]:
+        for pred in predaux[:n_classifiers]:
             for i,dato in enumerate(pred):
-                if clase_atrib != 0:
+                if class_atrib != 0:
                     clasificacion_final[i][1] += dato[1]
                     clasificacion_final[i][0] += dato[0]
                 else:
@@ -141,8 +141,8 @@ class ClasificadorRuido:
         aciertos = 0
 
         for i in range(x.shape[0]):
-            clasificacion_final[i][0] /= nclasificadores
-            clasificacion_final[i][1] /= nclasificadores
+            clasificacion_final[i][0] /= n_classifiers
+            clasificacion_final[i][1] /= n_classifiers
 
             prediccion_auxiliar = 1
             if clasificacion_final[i][0] > clasificacion_final[i][1]:
@@ -153,7 +153,7 @@ class ClasificadorRuido:
 
         return aciertos/x.shape[0]
 
-    def cambiarClase(self, x, y):
+    def change_class(self, x, y):
 
         datos = np.c_[x, y]
 

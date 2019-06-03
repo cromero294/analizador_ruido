@@ -17,7 +17,7 @@ import matplotlib
 from scipy import stats
 
 try:
-    dataset = Datos("Datasets/bank-full.csv")
+    dataset = Datos("Datasets/wdbc.data")
 
     X = dataset.getDatos()[:,:-1] # Todos los atributos menos la clase
     y = dataset.getDatos()[:,-1] # Todas las clases
